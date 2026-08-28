@@ -1,7 +1,9 @@
 package com.example.fruit.converter.service;
 
+import com.example.fruit.converter.dto.request.CurrencyCreationRequest;
 import com.example.fruit.converter.dto.response.CurrencyResponse;
 import com.example.fruit.converter.mapper.CurrencyMapper;
+import com.example.fruit.converter.model.Currency;
 import com.example.fruit.converter.repository.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,14 @@ import java.util.List;
 public class CurrencyService {
     private final CurrencyRepository currencyRepository;
     private final CurrencyMapper currencyMapper;
+
+    @Transactional
+    public CurrencyResponse addCurrency(CurrencyCreationRequest request) {
+        var currency = currencyMapper.toEntity(request);
+
+        Currency saved = currencyRepository.save(currency);
+        return currencyMapper.toResponse(saved);
+    }
 
     public List<CurrencyResponse> getAllCurrencies() { return currencyMapper.toResponseList(currencyRepository.findAll()); }
 

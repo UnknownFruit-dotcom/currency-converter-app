@@ -1,13 +1,12 @@
 package com.example.fruit.converter.controller;
 
+import com.example.fruit.converter.dto.request.CurrencyCreationRequest;
 import com.example.fruit.converter.dto.response.CurrencyResponse;
 import com.example.fruit.converter.service.CurrencyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +16,11 @@ import java.util.List;
 public class CurrencyController {
 
     private final CurrencyService currencyService;
+
+    @PostMapping
+    public ResponseEntity<CurrencyResponse> addCurrency(@Valid @RequestBody CurrencyCreationRequest request) {
+        return ResponseEntity.ok(currencyService.addCurrency(request));
+    }
 
     @GetMapping
     public ResponseEntity<List<CurrencyResponse>> getAllCurrencies() {
