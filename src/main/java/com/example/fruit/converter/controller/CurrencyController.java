@@ -31,4 +31,15 @@ public class CurrencyController {
     public ResponseEntity<CurrencyResponse> getCurrencyById(@PathVariable Long id) {
         return ResponseEntity.ok(currencyService.getCurrencyById(id));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCurrency(@PathVariable Long id) {
+        currencyService.deleteCurrency(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/active")
+    public ResponseEntity<CurrencyResponse> toggleCurrencyStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(currencyService.toggleCurrencyStatus(id));
+    }
 }

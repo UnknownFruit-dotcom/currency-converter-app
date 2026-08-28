@@ -2,6 +2,7 @@ package com.example.fruit.converter.service;
 
 import com.example.fruit.converter.dto.request.CurrencyCreationRequest;
 import com.example.fruit.converter.dto.response.CurrencyResponse;
+import com.example.fruit.converter.exception.ResourceNotFoundException;
 import com.example.fruit.converter.mapper.CurrencyMapper;
 import com.example.fruit.converter.model.Currency;
 import com.example.fruit.converter.repository.CurrencyRepository;
@@ -29,4 +30,22 @@ public class CurrencyService {
     public List<CurrencyResponse> getAllCurrencies() { return currencyMapper.toResponseList(currencyRepository.findAll()); }
 
     public CurrencyResponse getCurrencyById(Long id) { return currencyMapper.toResponse(currencyRepository.getReferenceById(id)); }
+
+    @Transactional
+    public CurrencyResponse toggleCurrencyStatus(Long id) {
+        Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Currency not found with id: " + id));
+
+        currency.setActive(!currency.getActive());
+
+        return currencyMapper.toResponse(currencyRepository.save(currency));
+    }
+
+    @Transactional
+    public void deleteCurrency(Long id) {
+        Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Currency not found with id: " + id));
+
+        currencyRepository.delete(currency);
+    }
 }
