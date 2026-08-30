@@ -1,6 +1,7 @@
 package com.example.fruit.converter.controller;
 
 import com.example.fruit.converter.dto.request.CurrencyCreationRequest;
+import com.example.fruit.converter.dto.request.CurrencyUpdateRequest;
 import com.example.fruit.converter.dto.response.CurrencyResponse;
 import com.example.fruit.converter.service.CurrencyService;
 import jakarta.validation.Valid;
@@ -41,5 +42,12 @@ public class CurrencyController {
     @PatchMapping("/{id}/active")
     public ResponseEntity<CurrencyResponse> toggleCurrencyStatus(@PathVariable Long id) {
         return ResponseEntity.ok(currencyService.toggleCurrencyStatus(id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CurrencyResponse> updateCurrency(
+            @PathVariable Long id,
+            @Valid @RequestBody CurrencyUpdateRequest request) {
+        return ResponseEntity.ok(currencyService.updateCurrency(id, request));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.fruit.converter.service;
 
 import com.example.fruit.converter.dto.request.CurrencyCreationRequest;
+import com.example.fruit.converter.dto.request.CurrencyUpdateRequest;
 import com.example.fruit.converter.dto.response.CurrencyResponse;
 import com.example.fruit.converter.exception.ResourceNotFoundException;
 import com.example.fruit.converter.mapper.CurrencyMapper;
@@ -47,5 +48,15 @@ public class CurrencyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Currency not found with id: " + id));
 
         currencyRepository.delete(currency);
+    }
+
+    @Transactional
+    public CurrencyResponse updateCurrency(Long id, CurrencyUpdateRequest request) {
+        Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Currency not found with id: " + id));
+
+        currencyMapper.updateCurrencyFromDto(request, currency);
+
+        return currencyMapper.toResponse(currencyRepository.save(currency));
     }
 }
