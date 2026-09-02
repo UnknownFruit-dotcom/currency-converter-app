@@ -1,11 +1,11 @@
 package com.example.fruit.converter.service;
 
+import com.example.fruit.converter.dto.response.CurrencyResponse;
 import com.example.fruit.converter.exception.ResourceNotFoundException;
 import com.example.fruit.converter.model.Currency;
 import com.example.fruit.converter.model.ExchangeRate;
 import com.example.fruit.converter.repository.CurrencyRepository;
 import com.example.fruit.converter.repository.ExchangeRateRepository;
-import com.example.fruit.converter.model.Currency;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
-import java.math.RoundingMode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -30,6 +29,8 @@ import java.util.List;
 public class ExchangeRateService {
     private final CurrencyRepository currencyRepository;
     private final ExchangeRateRepository exchangeRateRepository;
+
+    public List<ExchangeRate> getAllExchangeRates() { return exchangeRateRepository.findAll(); }
 
     @Transactional
     public void deleteExchangeRate(Long id) {
@@ -77,5 +78,10 @@ public class ExchangeRateService {
 
             return exchangeRateRepository.saveAll(rates);
         }
+    }
+
+    @Transactional
+    public Boolean existsExpiredOrMissing() {
+        return exchangeRateRepository.existsExpiredOrMissing(Instant.now());
     }
 }

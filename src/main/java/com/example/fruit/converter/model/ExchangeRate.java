@@ -9,13 +9,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(
-    name = "exchange_rates",
-    uniqueConstraints = @UniqueConstraint(
-        name = "uq_exchange_rates_pair",
-        columnNames = {"base_currency", "target_currency"}
-    )
-)
+@Table(name = "exchange_rates")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
