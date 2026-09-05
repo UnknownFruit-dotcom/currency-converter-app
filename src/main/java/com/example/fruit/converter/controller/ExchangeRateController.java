@@ -1,6 +1,6 @@
 package com.example.fruit.converter.controller;
 
-import com.example.fruit.converter.model.ExchangeRate;
+import com.example.fruit.converter.dto.response.ExchangeRateResponse;
 import com.example.fruit.converter.service.ExchangeRateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class ExchangeRateController {
     private final ExchangeRateService exchangeRateService;
 
     @GetMapping
-    public ResponseEntity<List<ExchangeRate>> getAllExchangeRates() {
+    public ResponseEntity<List<ExchangeRateResponse>> getAllExchangeRates() {
         return ResponseEntity.ok(exchangeRateService.getAllExchangeRates());
     }
 

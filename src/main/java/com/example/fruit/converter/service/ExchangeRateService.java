@@ -1,7 +1,8 @@
 package com.example.fruit.converter.service;
 
-import com.example.fruit.converter.dto.response.CurrencyResponse;
+import com.example.fruit.converter.dto.response.ExchangeRateResponse;
 import com.example.fruit.converter.exception.ResourceNotFoundException;
+import com.example.fruit.converter.mapper.ExchangeRateMapper;
 import com.example.fruit.converter.model.Currency;
 import com.example.fruit.converter.model.ExchangeRate;
 import com.example.fruit.converter.repository.CurrencyRepository;
@@ -29,8 +30,9 @@ import java.util.List;
 public class ExchangeRateService {
     private final CurrencyRepository currencyRepository;
     private final ExchangeRateRepository exchangeRateRepository;
+    private final ExchangeRateMapper exchangeRateMapper;
 
-    public List<ExchangeRate> getAllExchangeRates() { return exchangeRateRepository.findAll(); }
+    public List<ExchangeRateResponse> getAllExchangeRates() { return exchangeRateMapper.toResponseList(exchangeRateRepository.findAll()); }
 
     @Transactional
     public void deleteExchangeRate(Long id) {
@@ -42,7 +44,7 @@ public class ExchangeRateService {
     }
 
     @Transactional
-    public List<ExchangeRate> fetchAndStoreRates() throws Exception {
+    public List<ExchangeRateResponse> fetchAndStoreRates() throws Exception {
         Currency baseCurrency = currencyRepository.findByCode("RUB")
                 .orElseThrow(() -> new ResourceNotFoundException("Base Currency not found in database"));
 
@@ -76,7 +78,7 @@ public class ExchangeRateService {
                 rates.add(rate);
             }
 
-            return exchangeRateRepository.saveAll(rates);
+            return exchangeRateMapper.toResponseList(exchangeRateRepository.saveAll(rates));
         }
     }
 
