@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
@@ -24,4 +25,6 @@ public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long
       )
     """)
     boolean existsExpiredOrMissing(@Param("now") Instant now);
+
+    Optional<ExchangeRate> findFirstByBase_IdAndTarget_IdAndExpiresAtAfterOrderByFetchedAtDesc(Long baseId, Long targetId, Instant now);
 }
