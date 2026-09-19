@@ -36,10 +36,11 @@ HELP.md
 **/.mvn/wrapper/maven-wrapper.jar
 **/.apt_generated
 **/.springBeans
-*.log
 *.jar
 *.war
 *.class
+logs/
+*.log
 
 # ================== Frontend (React) ==================
 **/node_modules/
