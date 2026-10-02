@@ -61,7 +61,6 @@ public class ConversionService {
         else {
             Currency baseCurrency = currencyRepository.findByCode("RUB")
                     .orElseThrow(() -> new ResourceNotFoundException("Base Currency not found in database"));
-            log.error("Base Currency not found in database");
 
             ExchangeRate rate = exchangeRateRepository.findFirstByBase_IdAndTarget_IdAndExpiresAtAfterOrderByFetchedAtDesc(
                     baseCurrency.getId(),
