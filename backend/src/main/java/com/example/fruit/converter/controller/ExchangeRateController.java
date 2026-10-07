@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST API for exchange rates management.
+ */
 @RestController
 @RequestMapping("/api/exchange-rates")
 @RequiredArgsConstructor

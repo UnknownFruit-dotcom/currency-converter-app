@@ -15,6 +15,9 @@ import java.time.Instant;
 
 import static java.math.RoundingMode.HALF_UP;
 
+/**
+ * Handles currency conversion through the RUB base rate.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,15 @@ public class ConversionService {
     private final CurrencyRepository currencyRepository;
     private final ExchangeRateRepository exchangeRateRepository;
 
+    /**
+     * Converts amount from one currency to another using fresh RUB-based rates.
+     *
+     * @param fromId source currency id
+     * @param toId   target currency id
+     * @param amount amount in source currency
+     * @return converted amount rounded to target currency scale
+     * @throws ResourceNotFoundException if currency or fresh rate is missing
+     */
     public BigDecimal convert(Long fromId, Long toId, BigDecimal amount) {
         Currency fromCurrency = currencyRepository.findById(fromId)
                 .orElseThrow(() -> new ResourceNotFoundException("Currency not found with id: " + fromId));

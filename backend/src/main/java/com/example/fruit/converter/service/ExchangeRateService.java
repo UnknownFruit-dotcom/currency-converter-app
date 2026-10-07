@@ -23,6 +23,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages exchange rates and loads fresh rates from the CBR public API.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -43,6 +46,14 @@ public class ExchangeRateService {
         exchangeRateRepository.delete(rate);
     }
 
+    /**
+     * Fetches current rates from the CBR JSON endpoint, keeps only currencies
+     * present in the database, and upserts them as RUB-based rates.
+     *
+     * @return list of stored exchange rates
+     * @throws ResourceNotFoundException if the base currency (RUB) is not found
+     * @throws Exception if the CBR request or response parsing fails
+     */
     @Transactional
     public List<ExchangeRateResponse> fetchAndStoreRates() throws Exception {
         Currency baseCurrency = currencyRepository.findByCode("RUB")

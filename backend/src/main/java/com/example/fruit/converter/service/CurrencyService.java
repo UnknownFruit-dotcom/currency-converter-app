@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Handles basic operations with currencies.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
