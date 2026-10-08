@@ -7,10 +7,15 @@ Thumbs.db
 *.iws
 *.iml
 *.ipr
-.vscode/
 .vs/
 *.suo
 *.vsidx
+**/.vscode/*
+!**/.vscode/launch.json
+!**/.vscode/settings.json
+!**/.vscode/extensions.json
+!**/.vscode/tasks.json
+*.esproj.user
 
 ### STS ###
 .apt_generated
