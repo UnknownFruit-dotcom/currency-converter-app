@@ -3,6 +3,7 @@ import './App.css'
 import { currenciesService } from "./api/currenciesService";
 import { conversionService } from "./api/conversionService";
 import { ToastContainer, toast } from 'react-toastify';
+import info from './assets/info.png';
 
 function App() {
     const [currencies, setCurrencies] = useState([]);
@@ -32,6 +33,7 @@ function App() {
             } catch (e) {
                 console.error(e);
                 setCurrencies([]);
+                setError('Error loading currencies');
             }
         };
 
@@ -42,6 +44,14 @@ function App() {
         setError('');
         setLoading(true);
         event.preventDefault();
+
+        if (!amount.match(/^-?\d*\.?\d+$/)) {
+            setError("Incorrect number format");
+            setLoading(false);
+            setResult("");
+            return;
+        }
+
         try {
             const data = await conversionService.convert(fromId, toId, amount);
             setResult(data);
@@ -58,10 +68,19 @@ function App() {
   return (
     <>
       <section id="center">
-            <form className="conversionForm" onSubmit={handleConversionSubmission}>
-                  <h1>Conversion</h1>
+              <form className="conversionForm" onSubmit={handleConversionSubmission}>
+                  <div className="formHeader">
+                      <h1>Conversion</h1>
+                      <img src={info} alt="Info" title="Rates update daily from the Central Bank. Figures may be approximate.
 
-                  <select id="fromCurrency" onChange={(e) => {
+Курсы обновляются раз в день по данным ЦБ. Возможны неточности."/>
+                  </div>
+
+                  <select id="fromCurrency"
+                      value={fromId}
+                      title="Source currency"
+
+                      onChange={(e) => {
                       setFromId(e.target.value);
                       setResult('');
                   }}>
@@ -72,7 +91,11 @@ function App() {
                       }
                   </select>
 
-                  <select id="toCurrency" onChange={(e) => {
+                  <select id="toCurrency"
+                      value={toId}
+                      title="Target currency"
+
+                      onChange={(e) => {
                       setToId(e.target.value);
                       const code = e.target.selectedOptions[0]?.dataset.code;
                       setToCode(code ?? "");
@@ -85,7 +108,9 @@ function App() {
                       }
                   </select>
 
-                  <input type="text" id="amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+                  <input type="text" className="amount" value={amount}
+                      title="Amount to convert (dot as decimal separator)"
+                      onChange={(e) => setAmount(e.target.value)} required />
 
                   <div className="result">
                       {result + " " + toCode}
@@ -93,7 +118,7 @@ function App() {
 
                   <button type="submit" className="conversionBtn">Convert</button>
 
-                  <div className="message">
+                  <div className={`message${error ? "-error" : ""}`}>
                       {error}
                       {loading && "One second..."}
                   </div>
